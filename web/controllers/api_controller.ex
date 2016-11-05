@@ -9,19 +9,19 @@ defmodule Web.APIController do
 
     if Map.has_key?(params, "deployment") do
 
-      creator_name = if Map.has_key?(params, "creator") && Map.has_key?(params, "login") do
+      creator_name = if Map.has_key?(params["deployment"], "creator") && Map.has_key?(params, "login") do
         params["deployment"]["creator"]["login"]
       else
         "unknown user"
       end
 
-      aplication_name = if Map.has_key?(params, "environment") do
+      aplication_name = if Map.has_key?(params["deployment"], "environment") do
         params["deployment"]["environment"]
       else
         "unknown app"
       end
 
-      task = if Map.has_key?(params, "task") do
+      task = if Map.has_key?(params["deployment"], "task") do
         params["deployment"]["task"]
       else
         "unknown task"
