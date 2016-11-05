@@ -5,7 +5,7 @@ defmodule Web.GitFactory do
     # global have_message = false
     try do
       git = %{ message: "Git is stupid. #yolo", avatar_url: "yolo"}
-      parsed_params = Poison.Parser.parse!(params["payload"])
+      parsed_params = params
       git = if Map.has_key?(parsed_params, "deployment") do
         Web.GitFactory.Deployment.create(params)
       else
