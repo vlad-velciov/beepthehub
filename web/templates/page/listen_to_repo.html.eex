@@ -1,0 +1,12 @@
+<div class="section body">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h3>Listening to the repo <%= assigns[:params]["full_name"] %></h3>
+
+        <div id="messages"></div>
+        <input id="chat-input" type="text" style="width:100%"></input>
+      </div>
+    </div>
+  </div>
+</div>

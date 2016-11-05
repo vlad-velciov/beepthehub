@@ -3,10 +3,21 @@ defmodule Web.PageController do
   require Logger
 
   def index(conn, _params) do
-    github_link = "https://github.com/login/oauth/authorize?client_id=e5d6e30f2bd1216195bd&state=1234&scope=write:repo_hook"
+    github_link = "https://github.com/login/oauth/authorize?client_id=#{System.get_env("GITHUB_CLIENT_ID")}&state=1234&scope=write:repo_hook"
 
     access_token = get_session(conn, :access_token)
-    Logger.info "access_token #{access_token}"
+
+    is_logged = access_token != nil && access_token != ""
+
+    if is_logged do
+      redirect conn, to: "/repo_selection"
+    else
+      render conn, "index.html", is_logged: is_logged, github_link: github_link
+    end
+  end
+
+  def repo_selection(conn, _params) do
+    access_token = get_session(conn, :access_token)
 
     repos = if access_token != nil do
       repos_response = HTTPotion.get("https://api.github.com/user/repos?access_token=#{access_token}", headers: ["User-Agent": "My App", "Accept": "application/json"])
@@ -18,9 +29,19 @@ defmodule Web.PageController do
       []
     end
 
-    is_logged = access_token != nil && access_token != ""
+    render(conn, "repo_selection.html", repos: repos)
+  end
 
-    render conn, "index.html", is_logged: is_logged, repos: repos, github_link: github_link
+  def listen_to_repo(conn, _params) do
+    access_token = get_session(conn, :access_token)
+    # create webhook here
+    #
+    repo = _params["full_name"]
+    body = Poison.encode!(%{"name": "web", "active": true, "config": %{"content_type": "json", "url": "https://beepthehub.herokuapp.com/hookmeup"}})
+    response = HTTPotion.post "https://api.github.com/repos/#{repo}/hooks?access_token=#{access_token}", [body: body, headers: ["User-Agent": "My App", "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"]]
+    Logger.info "response from creating the hook: #{response.body}"
+    # create webhook here
+    render(conn, "listen_to_repo.html", params: _params)
   end
 
   def recursive_function(remaining) do
@@ -44,7 +65,7 @@ defmodule Web.PageController do
      "&code=" <>
      URI.encode_www_form(params["code"])
 
-    Logger.info "body that will be sent to github: #{body}"
+    # Logger.info "body that will be sent to github: #{body}"
 
     response = HTTPotion.post "https://github.com/login/oauth/access_token", [body: body, headers: ["User-Agent": "My App", "Content-Type": "application/x-www-form-urlencoded"]]
 
@@ -52,10 +73,10 @@ defmodule Web.PageController do
 
     access_token = elem(hd(parsed_response), 1)
 
-    Logger.info "access_token #{access_token}"
+    # Logger.info "access_token #{access_token}"
 
     conn = put_session(conn, :access_token, access_token)
 
-    render(conn, "auth.html", params: _params)
+    redirect conn, to: "/repo_selection"
   end
 end
