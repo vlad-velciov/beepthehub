@@ -48,7 +48,10 @@ defmodule Web.GitFactory do
       # in case we need it
       action_url = deployment["url"]
 
-      message = "#{String.capitalize(creator_name)} made a deploy on #{String.capitalize(Web.GitFactory.repository_details(params))} at #{date}."
+      action = String.capitalize(Web.GitFactory.repository_details(params))
+      # action = String.capitalize(Web.GitFactory.repository_details(params))
+
+      message = "#{String.capitalize(creator_name)} made a deploy on #{action} at #{date}."
       avatar_url = params["creator"]["avatar_url"]
 
       {message, avatar_url}
@@ -70,7 +73,10 @@ defmodule Web.GitFactory do
       # in case we need it
       action_url = release["url"]
 
-      message = "#{String.capitalize(creator_name)} made a release on #{String.capitalize(Web.GitFactory.repository_details(params))} at #{date}."
+      action = String.capitalize(Web.GitFactory.repository_details(params))
+      # action = String.capitalize(Web.GitFactory.repository_details(params))
+
+      message = "#{String.capitalize(creator_name)} made a release on #{action} at #{date}."
       avatar_url = release["author"]["avatar_url"]
 
       {message, avatar_url}
@@ -92,8 +98,9 @@ defmodule Web.GitFactory do
 
       commits_number = pull_request["commits"]
       title = pull_request["title"]
+      action = Web.GitFactory.repository_details(params)
 
-      message = "#{String.capitalize(creator_name)} made a pull request on #{String.capitalize(Web.GitFactory.repository_details(params))} at #{date} with the title: #{title}. \n Number of commits: #{commits_number}"
+      message = "#{String.capitalize(creator_name)} made a pull request on #{action} at #{date} with the title: #{title}. \n Number of commits: #{commits_number}"
       avatar_url = pull_request["user"]["avatar_url"]
 
       {message, avatar_url}
@@ -114,8 +121,9 @@ defmodule Web.GitFactory do
       date = params["timestamp"]
 
       action_url = head_commit["url"]
+      action = Web.GitFactory.repository_details(params)
 
-      message = "#{String.capitalize(creator_name)} made a push on #{String.capitalize(Web.GitFactory.repository_details(params))} at #{date}. \n Head commit message: #{pr_message}."
+      message = "#{String.capitalize(creator_name)} made a push on #{action} at #{date}. \n Head commit message: #{pr_message}."
       avatar_url = head_commit["author"]["avatar_url"]
 
       {message, avatar_url}
