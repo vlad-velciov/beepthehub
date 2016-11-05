@@ -1,0 +1,19 @@
+<div class="section body">
+  <div class="container">
+    <div class="row">
+
+      <div class="six columns">
+        <h3>Select the repository you would like to listen to</h3>
+        <%= for key <- assigns[:repos] do %>
+          <a href="listen_to_repo/?full_name=<%= key %>" class="button" style="width:100%">
+            <%= key %>
+          </a>
+        <% end %>
+      </div>
+
+      <div class="six columns">
+      </div>
+
+    </div>
+  </div>
+</div>

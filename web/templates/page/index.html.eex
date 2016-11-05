@@ -3,10 +3,6 @@
     <div class="row">
 
       <div class="six columns">
-        <%= for key <- assigns[:repos] do %>
-          <p><%= key %></p>
-        <% end %>
-
         <h3>Temporary chat app</h3>
 
         <div id="messages"></div>

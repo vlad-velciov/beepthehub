@@ -18,6 +18,8 @@ defmodule Web.Router do
 
     get "/", PageController, :index
     get "/auth", PageController, :auth
+    get "/repo_selection", PageController, :repo_selection
+    get "/listen_to_repo", PageController, :listen_to_repo
     post "/hookmeup", APIController, :git_hook
   end
 
