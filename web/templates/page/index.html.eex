@@ -1,15 +1,30 @@
 <div class="section body">
   <div class="container">
     <div class="row">
-      <div class="twelve columns">
+
+      <div class="six columns">
+        <%= for key <- assigns[:repos] do %>
+          <p><%= key %></p>
+        <% end %>
+
+        <h3>Temporary chat app</h3>
+
+        <div id="messages"></div>
+        <input id="chat-input" type="text"></input>
+      </div>
+
+      <div class="six columns">
+        <%= if assigns[:is_logged] == false do %>
+          <a href="<%= assigns[:github_link] %>" class="button button-primary" style="height:100px;padding-top:5px">
+            <img src="images/github.png" width="50" />
+            <br />
+            Login with Github
+          </a>
+        <% end %>
+
         <img src="http://s2.quickmeme.com/img/dd/dd929a70ab3430735bff8ca4b9fc1f3329f5a67eb99bef4af981568bf9e74ab3.jpg" width="300px" />
       </div>
+
     </div>
-
-
-    <h3>Temporary chat app</h3>
-
-    <div id="messages"></div>
-    <input id="chat-input" type="text"></input>
   </div>
 </div>
