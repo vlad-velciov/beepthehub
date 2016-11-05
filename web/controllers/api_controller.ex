@@ -8,6 +8,12 @@ defmodule Web.APIController do
     Logger.info "Json from github: #{inspect(params)}"
 
     git_object = Web.GitFactory.create(params)
+    Logger.info "=======================================params[payload][deployment]======================================================="
+    Logger.info inspect(params["payload"]["deployment"])
+    Logger.info "===============================================params[deployment]==============================================="
+    Logger.info inspect(params["deployment"])
+    Logger.info "=================================================params[payload]============================================="
+    Logger.info inspect(params["payload"])
 
     Web.Endpoint.broadcast("room:lobby", "new_msg", %{"body" => git_object.message, "avatar" => git_object.avatar_url})
 
