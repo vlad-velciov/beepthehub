@@ -5,23 +5,21 @@ defmodule Web.GitFactory do
     # global have_message = false
     try do
       git = %{ message: "Git is stupid. #yolo", avatar_url: "yolo"}
-      if Map.has_key?(params, "payload") do
         git = if Map.has_key?(params["payload"], "deployment") do
-          Web.GitFactory.Deployment.create(params["payload"])
+          Web.GitFactory.Deployment.create(params)
         else
           if Map.has_key?(params["payload"], "release") do
-           Web.GitFactory.Release.create(params["payload"])
+           Web.GitFactory.Release.create(params)
           else
             if Map.has_key?(params["payload"], "head_commit") do
-              Web.GitFactory.Push.create(params["payload"])
+              Web.GitFactory.Push.create(params)
             else
               if Map.has_key?(params["payload"], "pull_request") do
-                Web.GitFactory.PullRequest.create(params["payload"])
+                Web.GitFactory.PullRequest.create(params)
               end
             end
           end
         end
-      end
       Logger.info(inspect(git))
       git
     rescue
