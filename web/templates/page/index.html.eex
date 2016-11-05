@@ -1,7 +1,9 @@
 <div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+  <h2><%= gettext "Welcome to %{name}", name: "BeepTheHub" %></h2>
+  <img src="http://s2.quickmeme.com/img/dd/dd929a70ab3430735bff8ca4b9fc1f3329f5a67eb99bef4af981568bf9e74ab3.jpg" width="300px" />
 </div>
+
+<h3>Temporary chat app</h3>
 
 <div id="messages"></div>
 <input id="chat-input" type="text"></input>
