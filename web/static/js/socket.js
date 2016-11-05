@@ -4,6 +4,8 @@
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "phoenix"
+import notifications from "./notifications"
+import sounds from "./sounds"
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
@@ -57,26 +59,7 @@ socket.connect()
 let channel           = socket.channel("room:lobby", {})
 let chatInput         = document.querySelector("#chat-input")
 let messagesContainer = document.querySelector("#messages")
-let tauntCollection   = [
-  "Ownage.wav",
-  "dominating.wav",
-  "godlike.wav",
-  "headshot.wav",
-  "killingspree.wav",
-  "megakill.wav",
-  "monsterkill.wav",
-  "rampage.wav",
-  "multikill.wav",
-  "ultrakill.wav",
-  "triplekill.wav",
-  "english.wav",
-  "enough.wav",
-  "shining_heres_johnny.wav",
-  "t2_hasta_la_vista.wav",
-  "t3_no_sh.wav",
-  "t3_terminated.wav",
-  "trippy_ew.wav"
-];
+
 
 chatInput.addEventListener("keypress", event => {
   if(event.keyCode === 13){
@@ -85,13 +68,16 @@ chatInput.addEventListener("keypress", event => {
   }
 })
 
-channel.on("new_msg", payload => {
+var displayMessage = function(text) {
   let messageItem = document.createElement("li");
-  messageItem.innerText = `[${Date()}] ${payload.body}`
-  tauntCollection[Math.floor(Math.random()*tauntCollection.length)];
-  let audio = new Audio('/images/' + tauntCollection[Math.floor(Math.random()*tauntCollection.length)]);
-  audio.play();
+  messageItem.innerText = `[${Date()}] ${text}`  
   messagesContainer.appendChild(messageItem)
+}
+
+channel.on("new_msg", payload => {
+  displayMessage(payload.body);
+  sounds.playRandomTaunt();
+  notifications.notifyMe(payload.avatar, payload.body);  
 })
 
 channel.join()
