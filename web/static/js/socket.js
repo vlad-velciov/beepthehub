@@ -68,7 +68,14 @@ let tauntCollection   = [
   "rampage.wav",
   "multikill.wav",
   "ultrakill.wav",
-  "triplekill.wav"
+  "triplekill.wav",
+  "english.wav",
+  "enough.wav",
+  "shining_heres_johnny.wav",
+  "t2_hasta_la_vista.wav",
+  "t3_no_sh.wav",
+  "t3_terminated.wav",
+  "trippy_ew.wav"
 ];
 
 chatInput.addEventListener("keypress", event => {
