@@ -7,29 +7,9 @@ defmodule Web.APIController do
     params = _params
     Logger.info "Json from github: #{inspect(params)}"
 
-    if Map.has_key?(params, "deployment") do
+    git_object = Web.GitFactory.create(params)
 
-      creator_name = if Map.has_key?(params["deployment"], "creator") && Map.has_key?(params, "login") do
-        params["deployment"]["creator"]["login"]
-      else
-        "unknown user"
-      end
-
-      aplication_name = if Map.has_key?(params["deployment"], "environment") do
-        params["deployment"]["environment"]
-      else
-        "unknown app"
-      end
-
-      task = if Map.has_key?(params["deployment"], "task") do
-        params["deployment"]["task"]
-      else
-        "unknown task"
-      end
-
-      message = "#{String.capitalize(creator_name)} made a #{task} on #{String.capitalize(aplication_name)}"
-      Web.Endpoint.broadcast("room:lobby", "new_msg", %{"body" => message})
-    end
+    Web.Endpoint.broadcast("room:lobby", "new_msg", %{"body" => git_object.message, "avatar" => git_object.avatar_url})
 
     conn
     |> put_status(:created)
