@@ -57,6 +57,19 @@ socket.connect()
 let channel           = socket.channel("room:lobby", {})
 let chatInput         = document.querySelector("#chat-input")
 let messagesContainer = document.querySelector("#messages")
+let tauntCollection   = [
+  "Ownage.wav",
+  "dominating.wav",
+  "godlike.wav",
+  "headshot.wav",
+  "killingspree.wav",
+  "megakill.wav",
+  "monsterkill.wav",
+  "rampage.wav",
+  "multikill.wav",
+  "ultrakill.wav",
+  "triplekill.wav"
+];
 
 chatInput.addEventListener("keypress", event => {
   if(event.keyCode === 13){
@@ -68,6 +81,9 @@ chatInput.addEventListener("keypress", event => {
 channel.on("new_msg", payload => {
   let messageItem = document.createElement("li");
   messageItem.innerText = `[${Date()}] ${payload.body}`
+  tauntCollection[Math.floor(Math.random()*tauntCollection.length)];
+  let audio = new Audio('/images/' + tauntCollection[Math.floor(Math.random()*tauntCollection.length)]);
+  audio.play();
   messagesContainer.appendChild(messageItem)
 })
 
