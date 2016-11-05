@@ -9,20 +9,22 @@ defmodule Web.GitFactory do
 
     try do
 
-      if Map.has_key?(params, "deployment") do
-        git = {message, avatar_url} = Web.GitFactory.Deployment.create(params)
-      end
+      if Map.has_key?(params, "payload") do
+        if Map.has_key?(params["payload"], "deployment") do
+          git = {message, avatar_url} = Web.GitFactory.Deployment.create(params["payload"])
+        end
 
-      if Map.has_key?(params, "release") do
-        git = {message, avatar_url} = Web.GitFactory.Release.create(params)
-      end
+        if Map.has_key?(params["payload"], "release") do
+          git = {message, avatar_url} = Web.GitFactory.Release.create(params["payload"])
+        end
 
-      if Map.has_key?(params, "payload") && Map.has_key?(params["payload"], "head_commit") do
-        git = {message, avatar_url} = Web.GitFactory.Push.create(params)
-      end
+        if Map.has_key?(params["payload"], "head_commit") do
+          git = {message, avatar_url} = Web.GitFactory.Push.create(params["payload"])
+        end
 
-      if Map.has_key?(params, "payload") && Map.has_key?(params["payload"], "pull_request") do
-        git = {message, avatar_url} = Web.GitFactory.PullRequest.create(params)
+        if Map.has_key?(params["payload"], "pull_request") do
+          git = {message, avatar_url} = Web.GitFactory.PullRequest.create(params["payload"])
+        end
       end
     rescue
       e in BadMapError -> e
@@ -48,7 +50,7 @@ defmodule Web.GitFactory do
       # in case we need it
       action_url = deployment["url"]
 
-      action = Web.GitFactory.repository_details(params))
+      action = Web.GitFactory.repository_details(params)
       # action = String.capitalize(Web.GitFactory.repository_details(params))
 
       message = "#{String.capitalize(creator_name)} made a deploy on #{action} at #{date}."
@@ -73,7 +75,7 @@ defmodule Web.GitFactory do
       # in case we need it
       action_url = release["url"]
 
-      action = Web.GitFactory.repository_details(params))
+      action = Web.GitFactory.repository_details(params)
       # action = String.capitalize(Web.GitFactory.repository_details(params))
 
       message = "#{String.capitalize(creator_name)} made a release on #{action} at #{date}."
@@ -85,7 +87,7 @@ defmodule Web.GitFactory do
 
   defmodule PullRequest do
     def create(params) do
-      pull_request = params["payload"]["pull_request"]
+      pull_request = params["pull_request"]
       creator_name = if Map.has_key?(pull_request, "user") && Map.has_key?(pull_request, "login") do
         pull_request["user"]["login"]
       else
@@ -109,7 +111,7 @@ defmodule Web.GitFactory do
 
   defmodule Push do
     def create(params) do
-      head_commit = params["payload"]["head_commit"]
+      head_commit = params["head_commit"]
       creator_name = if Map.has_key?(head_commit, "author") && Map.has_key?(params, "name") do
         head_commit["author"]["name"]
       else
