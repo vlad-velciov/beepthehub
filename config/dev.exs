@@ -36,7 +36,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :web, Web.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "axia",
+  username: "axia_med",
   password: "P@ssw0rd!",
   database: "web_dev",
   hostname: "localhost",
