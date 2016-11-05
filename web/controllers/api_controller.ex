@@ -6,8 +6,11 @@ defmodule Web.APIController do
   def git_hook(conn, _params) do
     params = _params
     Logger.info "Json from github: #{inspect(params)}"
-    Logger.debug "#{inspect(params)}"
-    Logger.info "#{inspect(params)}"
+
+    git_object = Web.GitFactory.create(params)
+
+    Web.Endpoint.broadcast("room:lobby", "new_msg", %{"body" => git_object.message, "avatar" => git_object.avatar_url})
+
     conn
     |> put_status(:created)
     |> json(params)
