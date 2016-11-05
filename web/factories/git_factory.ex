@@ -26,12 +26,6 @@ defmodule Web.GitFactory do
     rescue
       e in BadMapError -> e
     end
-    # Logger.info(have_message)
-    # if have_message == false do
-    #
-    # else
-    #   git
-    # end
   end
 
   def repository_details(params) do
@@ -128,7 +122,7 @@ defmodule Web.GitFactory do
       action = Web.GitFactory.repository_details(params)
 
       message = "#{String.capitalize(creator_name)} made a push on #{action} at #{date}. \n Head commit message: #{pr_message}."
-      avatar_url = head_commit["author"]["avatar_url"]
+      avatar_url = params["sender"]["avatar_url"]
 
       %{message: message, avatar_url: avatar_url}
     end
