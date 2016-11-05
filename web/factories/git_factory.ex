@@ -8,11 +8,21 @@ defmodule Web.GitFactory do
     git = %{ message: "Git is stupid. #yolo", avatar_url: "yolo"}
 
     try do
-      git = {message, avatar_url} = case head do
-        "deployment" -> Web.GitFactory.Deployment.create(params)
-        "release" -> Web.GitFactory.Release.create(params)
-        "head_commit" -> Web.GitFactory.Push.create(params)
-        "pull_request" -> Web.GitFactory.PullRequest.create(params)
+
+      if Map.has_key?(params, "deployment") do
+        git = {message, avatar_url} = Web.GitFactory.Deployment.create(params)
+      end
+
+      if Map.has_key?(params, "release") do
+        git = {message, avatar_url} = Web.GitFactory.Release.create(params)
+      end
+
+      if Map.has_key?(params, "head_commit") do
+        git = {message, avatar_url} = Web.GitFactory.Push.create(params)
+      end
+
+      if Map.has_key?(params, "pull_request") do
+        git = {message, avatar_url} = Web.GitFactory.PullRequest.create(params)
       end
     rescue
       e in BadMapError -> e
