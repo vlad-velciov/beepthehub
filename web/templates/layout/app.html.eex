@@ -16,7 +16,7 @@
       <div class="container">
         <header class="row">
           <div class="twelve columns">
-            <h1>BeepTheHub</h1>
+            <a href="/"><h1>BeepTheHub</h1></a>
             <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
             <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
             <a href="http://getskeleton.com/">documentation for UI css (Skeleton)</a>
