@@ -24,7 +24,7 @@ let notifications = {
         this.close();
       };
 
-      setTimeout(notification.close.bind(notification), 3000);
+      setTimeout(notification.close.bind(notification), 5000);
     }
   }  
 }
